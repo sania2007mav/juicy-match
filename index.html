@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+  <meta name="theme-color" content="#ff6a3d">
+  <meta name="description" content="Сочный ряд — браузерная игра «три в ряд» про фрукты и ягоды. Без рекламы.">
+  <title>Сочный ряд</title>
+  <link rel="icon" href="./icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="./icons/icon-192.png">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+  <div id="app">
+    <div class="sky" aria-hidden="true">
+      <span class="blob b1"></span>
+      <span class="blob b2"></span>
+      <span class="blob b3"></span>
+    </div>
+
+    <section id="screen-map">
+      <header class="top">
+        <div class="brand">
+          <span class="logo" aria-hidden="true"></span>
+          <div>
+            <h1 id="title">Сочный ряд</h1>
+            <p id="tagline"></p>
+          </div>
+        </div>
+        <div class="tools">
+          <div class="langs" role="group" aria-label="Language">
+            <button type="button" data-lang="ru">RU</button>
+            <button type="button" data-lang="kk">KK</button>
+            <button type="button" data-lang="en">EN</button>
+          </div>
+          <button type="button" id="btn-mute" class="icon-btn">🔊</button>
+          <button type="button" id="btn-help" class="icon-btn">?</button>
+        </div>
+        <p id="wallet"></p>
+        <p id="map-note"></p>
+      </header>
+      <div id="map-scroll">
+        <div id="map-path"></div>
+      </div>
+    </section>
+
+    <section id="screen-game" hidden>
+      <header class="hud">
+        <button type="button" id="btn-back" class="icon-btn">←</button>
+        <div class="hud-mid">
+          <div id="hud-level"></div>
+          <div id="hud-goals"></div>
+        </div>
+        <div class="hud-stats">
+          <div class="stat">
+            <span id="moves-label"></span>
+            <b id="hud-moves">0</b>
+          </div>
+          <div class="stat">
+            <span id="score-label"></span>
+            <b id="hud-score">0</b>
+          </div>
+          <div id="hud-stars"></div>
+        </div>
+      </header>
+      <div id="board-wrap">
+        <canvas id="board"></canvas>
+        <div id="fx"></div>
+        <p id="banner" hidden></p>
+      </div>
+      <div id="boosters">
+        <button type="button" data-booster="hammer"><span class="b-name"></span><span class="b-count">0</span></button>
+        <button type="button" data-booster="shuffle"><span class="b-name"></span><span class="b-count">0</span></button>
+        <button type="button" data-booster="stripe"><span class="b-name"></span><span class="b-count">0</span></button>
+      </div>
+    </section>
+
+    <div id="modal" hidden>
+      <div class="card" id="modal-card" role="dialog" aria-modal="true"></div>
+    </div>
+  </div>
+  <script type="module" src="./js/main.js"></script>
+</body>
+</html>
