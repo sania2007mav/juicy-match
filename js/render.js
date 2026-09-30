@@ -79,10 +79,17 @@ export class BoardView {
   }
 
   resize() {
+    // Let the frame's CSS size win before reading it. An inline pin from the last
+    // resize would otherwise freeze the board at the old dimensions.
+    this.canvas.style.width = "";
+    this.canvas.style.height = "";
     const rect = this.canvas.getBoundingClientRect();
-    this.cssW = Math.max(1, rect.width);
-    this.cssH = Math.max(1, rect.height);
-    this.dpr = Math.min(2, window.devicePixelRatio || 1);
+    // Integer CSS pixels so the backing store maps onto the screen without a fractional scale.
+    this.cssW = Math.max(1, Math.round(rect.width));
+    this.cssH = Math.max(1, Math.round(rect.height));
+    this.canvas.style.width = `${this.cssW}px`;
+    this.canvas.style.height = `${this.cssH}px`;
+    this.dpr = window.devicePixelRatio || 1;
     this.canvas.width = Math.round(this.cssW * this.dpr);
     this.canvas.height = Math.round(this.cssH * this.dpr);
     const pad = 6;
@@ -500,32 +507,15 @@ export class BoardView {
       if (sprite.t === "C") this.drawSpectrum(ctx, radius);
       else if (sprite.t === "I") this.drawNectar(ctx, radius);
       else {
-        const image = this.spriteImage(sprite, radius);
-        ctx.drawImage(image, -radius * 1.35, -radius * 1.35, radius * 2.7, radius * 2.7);
+        // Draw the fruit vectors in the device-pixel context. A cached 1x bitmap
+        // was being scaled up on high-DPR screens and looked soft.
+        const fruitR = radius * 2.7 * 0.34;
+        this.drawFruit(ctx, sprite.color ?? 0, fruitR);
+        if (sprite.t === "S") this.drawStripes(ctx, fruitR, sprite.dir);
+        if (sprite.t === "W") this.drawRibbon(ctx, fruitR);
       }
       ctx.restore();
     }
-  }
-
-  spriteImage(sprite, radius) {
-    const size = Math.max(16, Math.round(radius * 2.7));
-    const key = `${sprite.t}:${sprite.color}:${sprite.dir}:${size}`;
-    const cached = this.cache.get(key);
-    if (cached) return cached;
-    const canvas = document.createElement("canvas");
-    canvas.width = size;
-    canvas.height = size;
-    const ctx = canvas.getContext("2d");
-    const color = sprite.color ?? 0;
-    ctx.save();
-    ctx.translate(size / 2, size / 2);
-    const r = size * 0.34;
-    this.drawFruit(ctx, color, r);
-    if (sprite.t === "S") this.drawStripes(ctx, r, sprite.dir);
-    if (sprite.t === "W") this.drawRibbon(ctx, r);
-    ctx.restore();
-    this.cache.set(key, canvas);
-    return canvas;
   }
 
   drawFruit(ctx, color, r) {

@@ -476,10 +476,15 @@ button.juicy:active, .primary:active, .ghost:active, .icon-btn:active, .langs bu
   display: flex;
   align-items: center;
   justify-content: center;
+  /* Definite size so the tray does not shrink-wrap the canvas bitmap. */
+  container-type: size;
 }
 .tray {
   position: relative;
-  padding: 16px 14px 18px;
+  box-sizing: border-box;
+  width: min(100cqw, 100cqh);
+  aspect-ratio: 1;
+  padding: 16px;
   border-radius: 32px;
   background:
     repeating-linear-gradient(90deg, rgba(255, 226, 176, 0.18) 0 3px, transparent 3px 9px),
@@ -505,10 +510,9 @@ button.juicy:active, .primary:active, .ghost:active, .icon-btn:active, .langs bu
 .rivet.bl { bottom: 8px; left: 10px; }
 .rivet.br { bottom: 8px; right: 10px; }
 #board {
-  width: min(100%, calc(100dvh - 310px));
-  height: min(100%, calc(100dvh - 310px));
-  max-width: 100%;
-  aspect-ratio: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
   touch-action: none;
   border-radius: 20px;
   background:
@@ -516,7 +520,7 @@ button.juicy:active, .primary:active, .ghost:active, .icon-btn:active, .langs bu
     linear-gradient(180deg, #6b4228, #3d2414);
   box-shadow: inset 0 0 0 4px #f6e0b4, inset 0 10px 16px rgba(0,0,0,0.35);
 }
-#fx { position: absolute; inset: 16px 14px 18px; pointer-events: none; overflow: hidden; border-radius: 20px; }
+#fx { position: absolute; inset: 16px; pointer-events: none; overflow: hidden; border-radius: 20px; }
 #banner {
   position: absolute;
   left: 50%;
