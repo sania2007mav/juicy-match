@@ -66,9 +66,9 @@ button:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
 .top {
   position: relative;
   z-index: 2;
-  margin: 8px 10px 0;
-  padding: calc(8px + env(safe-area-inset-top)) 12px 10px;
-  border-radius: 26px;
+  margin: 6px 8px 0;
+  padding: calc(6px + env(safe-area-inset-top)) 10px 6px;
+  border-radius: 22px;
   background:
     linear-gradient(180deg, rgba(255,255,255,0.55), transparent 42%),
     linear-gradient(180deg, #fff6e4, #ffd9a8);
@@ -77,41 +77,41 @@ button:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
 }
 .brand { display: flex; gap: 10px; align-items: center; }
 .logo-mark {
-  width: 58px;
-  height: 58px;
+  width: 46px;
+  height: 46px;
   flex: none;
   position: relative;
-  filter: drop-shadow(0 4px 0 rgba(140, 40, 20, 0.2));
+  filter: drop-shadow(0 3px 0 rgba(140, 40, 20, 0.2));
 }
 .logo-mark span {
   position: absolute;
   border-radius: 50%;
   box-shadow: inset -4px -5px 0 rgba(0,0,0,0.12), inset 3px 3px 0 rgba(255,255,255,0.55);
 }
-.logo-mark .f1 { width: 28px; height: 28px; background: radial-gradient(circle at 35% 35%, #ffd0d0, #ff3b3b 60%, #c41228); left: 4px; top: 16px; }
-.logo-mark .f2 { width: 24px; height: 24px; background: radial-gradient(circle at 35% 35%, #ffe1a8, #ff9a1f 62%, #e06a00); right: 4px; top: 8px; }
-.logo-mark .f3 { width: 22px; height: 22px; background: radial-gradient(circle at 35% 35%, #e7d6ff, #7a4bff 60%, #4a28b0); left: 18px; bottom: 2px; }
+.logo-mark .f1 { width: 22px; height: 22px; background: radial-gradient(circle at 35% 35%, #ffd0d0, #ff3b3b 60%, #c41228); left: 2px; top: 13px; }
+.logo-mark .f2 { width: 19px; height: 19px; background: radial-gradient(circle at 35% 35%, #ffe1a8, #ff9a1f 62%, #e06a00); right: 1px; top: 5px; }
+.logo-mark .f3 { width: 17px; height: 17px; background: radial-gradient(circle at 35% 35%, #e7d6ff, #7a4bff 60%, #4a28b0); left: 14px; bottom: 1px; }
 .logo-mark .leaf {
-  width: 16px; height: 8px; border-radius: 8px 8px 8px 2px;
-  background: #3cba55; left: 22px; top: 2px; transform: rotate(-24deg);
+  width: 13px; height: 6px; border-radius: 8px 8px 8px 2px;
+  background: #3cba55; left: 16px; top: 1px; transform: rotate(-24deg);
   box-shadow: none;
 }
 h1#title {
   margin: 0;
-  font-size: 1.72rem;
+  font-size: 1.32rem;
   line-height: 0.95;
   letter-spacing: -0.04em;
   font-weight: 900;
   color: #fffdf8;
-  text-shadow: 0 3px 0 #c4314e, 0 6px 0 rgba(120, 20, 40, 0.15);
+  text-shadow: 0 2px 0 #c4314e, 0 4px 0 rgba(120, 20, 40, 0.12);
   background: linear-gradient(180deg, #ff7a4a, #ff3d6e);
-  padding: 6px 12px 8px;
-  border-radius: 16px 16px 18px 18px;
-  box-shadow: 0 4px 0 #b42348, inset 0 2px 0 rgba(255,255,255,0.45);
+  padding: 4px 10px 5px;
+  border-radius: 14px 14px 16px 16px;
+  box-shadow: 0 3px 0 #b42348, inset 0 2px 0 rgba(255,255,255,0.45);
   display: inline-block;
 }
-#tagline { margin: 5px 0 0; color: var(--ink-soft); font-size: 0.78rem; font-weight: 700; }
-.tools { display: flex; gap: 8px; align-items: center; margin-top: 8px; }
+#tagline { margin: 2px 0 0; color: var(--ink-soft); font-size: 0.68rem; font-weight: 700; }
+.tools { display: flex; gap: 6px; align-items: center; margin-top: 4px; }
 .langs {
   display: flex;
   background: rgba(255,255,255,0.7);
@@ -124,17 +124,18 @@ h1#title {
   background: transparent;
   color: var(--ink);
   border-radius: 999px;
-  padding: 6px 10px;
+  padding: 4px 8px;
   font-weight: 800;
+  font-size: 0.82rem;
 }
 .langs button.on {
   background: linear-gradient(180deg, #fff, #ffe7bf);
   box-shadow: 0 3px 0 #e7b56a;
 }
 .icon-btn {
-  width: 42px;
-  height: 42px;
-  border-radius: 16px;
+  width: 34px;
+  height: 34px;
+  border-radius: 12px;
   background: linear-gradient(180deg, #fff, #ffe8c4);
   color: var(--ink);
   font-weight: 900;
@@ -147,17 +148,26 @@ h1#title {
 #btn-mute .ico-off { display: none; }
 #btn-mute.is-muted .ico-on { display: none; }
 #btn-mute.is-muted .ico-off { display: block; }
-#wallet { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 0; }
+#wallet {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 4px;
+  margin: 5px 0 0;
+}
 .chip {
   background: rgba(255,255,255,0.82);
   border-radius: 999px;
-  padding: 3px 8px;
-  font-size: 0.75rem;
+  padding: 2px 4px;
+  font-size: 0.64rem;
   font-weight: 800;
   box-shadow: 0 2px 0 rgba(180, 90, 40, 0.12);
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .chip b { color: #e07a12; }
-#map-note { margin: 6px 0 0; color: var(--ink-soft); font-size: 0.78rem; font-weight: 700; }
+#map-note { margin: 3px 0 0; color: var(--ink-soft); font-size: 0.66rem; font-weight: 700; }
 
 button.juicy:active, .primary:active, .ghost:active, .icon-btn:active, .langs button:active, #boosters button:active:not(:disabled), .node:active:not(:disabled) {
   transform: translateY(3px) scale(0.97, 0.93);
@@ -166,11 +176,16 @@ button.juicy:active, .primary:active, .ghost:active, .icon-btn:active, .langs bu
 #map-scroll {
   flex: 1;
   overflow: auto;
-  margin-top: 8px;
+  margin-top: 0;
   overscroll-behavior: contain;
   position: relative;
 }
-#map-path { position: relative; width: 100%; }
+#map-path {
+  position: relative;
+  width: 100%;
+  /* Clip the parallax layer so a translated cloud cannot stretch the scroll height past the painted world. */
+  overflow: clip;
+}
 
 .zone-band {
   position: absolute;

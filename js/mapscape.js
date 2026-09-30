@@ -129,14 +129,16 @@ function roadPath(points) {
 
 function layout(levels) {
   const count = levels.length;
-  const height = 200 + (count - 1) * GAP + 210;
   const points = levels.map((level, index) => ({
     id: level.id,
     index,
     x: 50 + Math.sin(index * 0.86) * 16 + Math.sin(index * 0.31 + 0.6) * 6,
-    y: 120 + (count - 1 - index) * GAP,
+    y: 160 + (count - 1 - index) * GAP,
   }));
-  return { height, points };
+  const bottom = Math.max(...points.map((point) => point.y));
+  // Lawn under level 1, tall enough that the current level can sit low
+  // and the scrollport is still full of ground at the bottom.
+  return { height: bottom + 360, points };
 }
 
 export function renderWorld(container, { levels, unlocked, best, zoneName, onOpen }) {
@@ -146,10 +148,16 @@ export function renderWorld(container, { levels, unlocked, best, zoneName, onOpe
 
   const bands = ZONES.map((zone) => {
     const group = points.filter((point) => point.id >= zone.from && point.id <= zone.to);
-    const top = Math.min(...group.map((point) => point.y)) - GAP * 0.62;
-    const bottom = Math.max(...group.map((point) => point.y)) + GAP * 0.62;
+    const top = Math.min(...group.map((point) => point.y)) - GAP * 0.45;
+    const bottom = Math.max(...group.map((point) => point.y)) + GAP * 0.45;
     return { ...zone, top, height: bottom - top };
-  });
+  }).sort((a, b) => a.top - b.top);
+  bands[0].top = 0;
+  for (let i = 0; i < bands.length - 1; i++) {
+    bands[i].height = bands[i + 1].top - bands[i].top;
+  }
+  const lastBand = bands[bands.length - 1];
+  lastBand.height = height - lastBand.top;
 
   for (const band of bands) {
     const layer = document.createElement("div");
@@ -209,6 +217,32 @@ export function renderWorld(container, { levels, unlocked, best, zoneName, onOpe
     prop.innerHTML = MARKS[kind] || MARKS.flower;
     container.appendChild(prop);
   });
+
+  const meadow = points.find((point) => point.id === 1);
+  const crown = points.find((point) => point.id === levels.length);
+  const extras = [
+    ["lantern", crown.x - 24, crown.y - 78],
+    ["flag", crown.x + 22, crown.y - 36],
+    ["tree", 18, meadow.y + 86],
+    ["bush", meadow.x - 28, meadow.y + 108],
+    ["flower", 78, meadow.y + 96],
+    ["flower", meadow.x + 24, meadow.y + 132],
+    ["fence", 36, meadow.y + 168],
+    ["bush", 82, meadow.y + 176],
+    ["tree", 22, meadow.y + 214],
+    ["flower", 58, meadow.y + 228],
+    ["fence", 70, meadow.y + 268],
+    ["bush", 30, meadow.y + 286],
+    ["flower", 84, meadow.y + 300],
+  ];
+  for (const [kind, left, top] of extras) {
+    const prop = document.createElement("div");
+    prop.className = `prop prop-${kind}`;
+    prop.style.left = `${Math.max(16, Math.min(84, left))}%`;
+    prop.style.top = `${top}px`;
+    prop.innerHTML = MARKS[kind] || MARKS.flower;
+    container.appendChild(prop);
+  }
 
   for (const point of points) {
     const done = best[point.id];

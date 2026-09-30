@@ -105,7 +105,7 @@ function paintChrome() {
   const wallet = document.querySelector("#wallet");
   const boosters = game.save.boosters;
   wallet.innerHTML = [
-    [t("stars"), totalStars()],
+    ["★", totalStars()],
     [t("hammer"), boosters.hammer],
     [t("shuffle"), boosters.shuffle],
     [t("stripe"), boosters.stripe],
@@ -121,10 +121,17 @@ function renderMap() {
     zoneName: (id) => t(`zone.${id}`),
     onOpen: (id) => openLevel(id),
   });
-  requestAnimationFrame(() => {
-    const current = path.querySelector(".node.current") || path.querySelector('[data-level="1"]');
-    current?.scrollIntoView({ block: "center" });
-  });
+  requestAnimationFrame(() => focusCurrentLevel());
+}
+
+function focusCurrentLevel() {
+  const scroll = document.querySelector("#map-scroll");
+  const node = document.querySelector("#map-path .node.current") || document.querySelector('#map-path [data-level="1"]');
+  if (!scroll || !node) return;
+  const nodeTop = node.getBoundingClientRect().top - scroll.getBoundingClientRect().top + scroll.scrollTop;
+  const target = nodeTop - scroll.clientHeight * 0.62;
+  const max = Math.max(0, scroll.scrollHeight - scroll.clientHeight);
+  scroll.scrollTop = Math.max(0, Math.min(max, target));
 }
 
 function applyZone(levelId) {
