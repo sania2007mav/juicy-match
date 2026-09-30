@@ -1,4 +1,4 @@
-const CACHE = "sochny-ryad-v1";
+const CACHE = "sochny-ryad-v2";
 const ASSETS = [
   "./",
   "./index.html",
@@ -9,6 +9,7 @@ const ASSETS = [
   "./js/render.js",
   "./js/i18n.js",
   "./js/audio.js",
+  "./js/mapscape.js",
   "./manifest.webmanifest",
   "./icons/icon.svg",
   "./icons/icon-192.png",

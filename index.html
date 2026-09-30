@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
-  <div id="app">
+  <div id="app" data-build="decor-2">
     <div class="sky" aria-hidden="true">
       <span class="blob b1"></span>
       <span class="blob b2"></span>
@@ -22,7 +22,12 @@
     <section id="screen-map">
       <header class="top">
         <div class="brand">
-          <span class="logo" aria-hidden="true"></span>
+          <div class="logo-mark" aria-hidden="true">
+            <span class="leaf"></span>
+            <span class="f1"></span>
+            <span class="f2"></span>
+            <span class="f3"></span>
+          </div>
           <div>
             <h1 id="title">Сочный ряд</h1>
             <p id="tagline"></p>
@@ -34,8 +39,13 @@
             <button type="button" data-lang="kk">KK</button>
             <button type="button" data-lang="en">EN</button>
           </div>
-          <button type="button" id="btn-mute" class="icon-btn">🔊</button>
-          <button type="button" id="btn-help" class="icon-btn">?</button>
+          <button type="button" id="btn-mute" class="icon-btn" aria-label="Звук">
+            <svg class="ico-on" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16 9a4 4 0 0 1 0 6" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+            <svg class="ico-off" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16 10l5 5m0-5l-5 5" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+          </button>
+          <button type="button" id="btn-help" class="icon-btn" aria-label="Как играть">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M9.5 9a2.5 2.5 0 1 1 3.2 2.4c-.7.3-1.2.9-1.2 1.6V14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="11.5" cy="17" r="1" fill="currentColor" stroke="none"/></svg>
+          </button>
         </div>
         <p id="wallet"></p>
         <p id="map-note"></p>
@@ -45,34 +55,58 @@
       </div>
     </section>
 
-    <section id="screen-game" hidden>
+    <section id="screen-game" hidden data-zone="orchard">
       <header class="hud">
-        <button type="button" id="btn-back" class="icon-btn">←</button>
-        <div class="hud-mid">
-          <div id="hud-level"></div>
-          <div id="hud-goals"></div>
-        </div>
-        <div class="hud-stats">
-          <div class="stat">
-            <span id="moves-label"></span>
+        <div class="hud-panel">
+          <button type="button" id="btn-back" class="icon-btn" aria-label="Назад">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 L8 12 l7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="hud-mid">
+            <div id="hud-level"></div>
+            <div id="hud-goals"></div>
+          </div>
+          <div class="moves-orb">
             <b id="hud-moves">0</b>
+            <span id="moves-label"></span>
           </div>
-          <div class="stat">
-            <span id="score-label"></span>
-            <b id="hud-score">0</b>
+          <div class="score-col">
+            <div class="score-track" id="score-track">
+              <div class="score-fill" id="score-fill"></div>
+              <b class="score-num" id="hud-score">0</b>
+              <span class="star-mark" data-star="0">★</span>
+              <span class="star-mark" data-star="1">★</span>
+              <span class="star-mark" data-star="2">★</span>
+            </div>
           </div>
-          <div id="hud-stars"></div>
         </div>
       </header>
       <div id="board-wrap">
-        <canvas id="board"></canvas>
-        <div id="fx"></div>
+        <div class="tray">
+          <span class="rivet tl"></span>
+          <span class="rivet tr"></span>
+          <span class="rivet bl"></span>
+          <span class="rivet br"></span>
+          <canvas id="board"></canvas>
+          <div id="fx"></div>
+        </div>
         <p id="banner" hidden></p>
       </div>
       <div id="boosters">
-        <button type="button" data-booster="hammer"><span class="b-name"></span><span class="b-count">0</span></button>
-        <button type="button" data-booster="shuffle"><span class="b-name"></span><span class="b-count">0</span></button>
-        <button type="button" data-booster="stripe"><span class="b-name"></span><span class="b-count">0</span></button>
+        <button type="button" data-booster="hammer">
+          <span class="b-ico" aria-hidden="true"><svg viewBox="0 0 48 48"><rect x="20" y="22" width="8" height="20" rx="3" fill="#c4894a"/><rect x="8" y="10" width="32" height="14" rx="5" fill="#e7c99a"/><rect x="8" y="10" width="32" height="5" rx="2" fill="#fff6e4"/></svg></span>
+          <span class="b-name"></span>
+          <span class="b-count">0</span>
+        </button>
+        <button type="button" data-booster="shuffle">
+          <span class="b-ico" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M14 16h16l-5-5 3-3 11 11-11 11-3-3 5-5H14z" fill="#7a3410"/><path d="M34 32H18l5 5-3 3L9 29l11-11 3 3-5 5h16z" fill="#c45b1a"/></svg></span>
+          <span class="b-name"></span>
+          <span class="b-count">0</span>
+        </button>
+        <button type="button" data-booster="stripe">
+          <span class="b-ico" aria-hidden="true"><svg viewBox="0 0 48 48"><rect x="8" y="12" width="32" height="6" rx="3" fill="#fff"/><rect x="8" y="21" width="32" height="6" rx="3" fill="#ffe08a"/><rect x="8" y="30" width="32" height="6" rx="3" fill="#fff"/></svg></span>
+          <span class="b-name"></span>
+          <span class="b-count">0</span>
+        </button>
       </div>
     </section>
 

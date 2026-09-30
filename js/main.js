@@ -12,6 +12,7 @@ import {
 import { goalText, getLang, levelName, setLang, t } from "./i18n.js";
 import { AudioBus } from "./audio.js";
 import { BoardView } from "./render.js";
+import { renderWorld, zoneOf } from "./mapscape.js";
 
 const SAVE_KEY = "sochny-ryad-v1";
 const BOOST_ORDER = ["hammer", "shuffle", "stripe"];
@@ -96,52 +97,40 @@ function paintChrome() {
   document.querySelector("#map-note").textContent = t("mapNote");
   document.querySelector("#btn-help").setAttribute("aria-label", t("help"));
   document.querySelector("#btn-mute").setAttribute("aria-label", t("sound"));
-  document.querySelector("#btn-mute").textContent = game.save.mute ? "🔇" : "🔊";
+  document.querySelector("#btn-mute").classList.toggle("is-muted", !!game.save.mute);
   document.querySelector("#btn-back").setAttribute("aria-label", t("back"));
   document.querySelectorAll("[data-lang]").forEach((button) => {
     button.classList.toggle("on", button.dataset.lang === getLang());
   });
   const wallet = document.querySelector("#wallet");
-  wallet.textContent = `${t("stars")}: ${totalStars()}  ·  ${t("hammer")} ${game.save.boosters.hammer}  ·  ${t("shuffle")} ${game.save.boosters.shuffle}  ·  ${t("stripe")} ${game.save.boosters.stripe}`;
+  const boosters = game.save.boosters;
+  wallet.innerHTML = [
+    [t("stars"), totalStars()],
+    [t("hammer"), boosters.hammer],
+    [t("shuffle"), boosters.shuffle],
+    [t("stripe"), boosters.stripe],
+  ].map(([label, count]) => `<span class="chip">${label} <b>${count}</b></span>`).join("");
 }
 
 function renderMap() {
-  const scroll = document.querySelector("#map-scroll");
   const path = document.querySelector("#map-path");
-  const count = LEVELS.length;
-  const gap = 104;
-  const height = 150 + (count - 1) * gap + 140;
-  path.style.height = `${height}px`;
-  const points = LEVELS.map((level, index) => ({
-    id: level.id,
-    x: 50 + Math.sin(index * 0.82) * 24,
-    y: 70 + (count - 1 - index) * gap,
-  }));
-  const d = points.map((point, index) => `${index ? "L" : "M"} ${point.x} ${point.y}`).join(" ");
-  path.innerHTML = `
-    <svg class="vine" viewBox="0 0 100 ${height}" preserveAspectRatio="none" aria-hidden="true">
-      <path d="${d}" />
-    </svg>
-  `;
-  for (const point of points) {
-    const done = game.save.best[point.id];
-    const open = point.id <= game.save.unlocked;
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = `node${open ? "" : " locked"}${point.id === game.save.unlocked ? " current" : ""}`;
-    button.style.left = `${point.x}%`;
-    button.style.top = `${point.y}px`;
-    button.dataset.level = String(point.id);
-    button.disabled = !open;
-    const stars = done ? "★".repeat(done.stars) + "☆".repeat(3 - done.stars) : open ? "" : "🔒";
-    button.innerHTML = `<span class="node-num">${point.id}</span><span class="node-stars">${stars}</span>`;
-    button.addEventListener("click", () => openLevel(point.id));
-    path.appendChild(button);
-  }
+  renderWorld(path, {
+    levels: LEVELS,
+    unlocked: game.save.unlocked,
+    best: game.save.best,
+    zoneName: (id) => t(`zone.${id}`),
+    onOpen: (id) => openLevel(id),
+  });
   requestAnimationFrame(() => {
-    const current = path.querySelector(".current") || path.querySelector('[data-level="1"]');
+    const current = path.querySelector(".node.current") || path.querySelector('[data-level="1"]');
     current?.scrollIntoView({ block: "center" });
   });
+}
+
+function applyZone(levelId) {
+  const zone = zoneOf(levelId);
+  document.querySelector("#screen-game").dataset.zone = zone;
+  document.querySelector("#app").dataset.zone = zone;
 }
 
 function openLevel(id) {
@@ -154,6 +143,7 @@ function openLevel(id) {
   game.booster = null;
   game.selected = null;
   game.mode = "intro";
+  applyZone(def.id);
   showScreen("game");
   view.load(game.state.grid);
   view.selected = null;
@@ -169,16 +159,39 @@ function showScreen(name) {
   if (name === "map") view.stop();
 }
 
+const ICO = {
+  play: `<svg viewBox="0 0 24 24"><path d="M8 5l12 7-12 7z"/></svg>`,
+  next: `<svg viewBox="0 0 24 24"><path d="M5 12h12m0 0l-5-5m5 5l-5 5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  retry: `<svg viewBox="0 0 24 24"><path d="M19 12a7 7 0 1 1-2-5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><path d="M19 4v5h-5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>`,
+  map: `<svg viewBox="0 0 24 24"><path d="M12 21s7-6 7-11a7 7 0 1 0-14 0c0 5 7 11 7 11z"/><circle cx="12" cy="10" r="2.2" fill="#fff"/></svg>`,
+  plus: `<svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>`,
+};
+
+function juicyButton(id, cls, icon, label) {
+  return `<button type="button" class="${cls}" id="${id}"><span class="bico">${icon}</span><span>${label}</span></button>`;
+}
+
+function goalMark(goal) {
+  if (goal.type === "ice") return `<i class="mark mark-ice" aria-hidden="true"></i>`;
+  if (goal.type === "ingredient") return `<i class="mark mark-drop" aria-hidden="true"></i>`;
+  if (goal.type === "collect") return `<i class="mark mark-fruit c${goal.color ?? 0}" aria-hidden="true"></i>`;
+  return `<i class="mark mark-star" aria-hidden="true"></i>`;
+}
+
+function ribbon(title) {
+  return `<div class="ribbon"><span>${title}</span></div>`;
+}
+
 function showIntro() {
-  const goals = game.level.goals.map((goal) => `<li>${goalText(goal)}</li>`).join("");
+  const goals = game.level.goals.map((goal) => `<li>${goalMark(goal)}<span>${goalText(goal)}</span></li>`).join("");
   const tip = game.level.tip ? `<p class="tip">${t(`tip.${game.level.tip}`)}</p>` : "";
   openModal("intro", `
+    ${ribbon(levelName(game.level.id))}
     <p class="kicker">${t("level")} ${game.level.id}</p>
-    <h2>${levelName(game.level.id)}</h2>
     <ul class="goal-list">${goals}</ul>
     <p class="moves-pill">${t("moves")}: ${game.level.moves}</p>
     ${tip}
-    <button type="button" class="primary" id="btn-start">${t("start")}</button>
+    ${juicyButton("btn-start", "primary", ICO.play, t("start"))}
   `);
   document.querySelector("#btn-start").addEventListener("click", () => {
     audio.button();
@@ -203,17 +216,20 @@ function paintHud(snapshot) {
   document.querySelector("#hud-level").textContent = `${game.level.id}. ${levelName(game.level.id)}`;
   document.querySelector("#hud-score").textContent = String(score);
   document.querySelector("#hud-moves").textContent = String(moves);
-  document.querySelector("#score-label").textContent = t("score");
   document.querySelector("#moves-label").textContent = t("moves");
   const goalBox = document.querySelector("#hud-goals");
   goalBox.innerHTML = goals.map((goal) => {
-    const pct = Math.max(0, Math.min(1, goal.current / goal.target));
-    return `<div class="goal-chip"><span>${goalText(goal)}</span><b>${Math.min(goal.current, goal.target)}/${goal.target}</b><i style="width:${pct * 100}%"></i></div>`;
+    const pct = Math.max(0, Math.min(1, goal.target ? goal.current / goal.target : 0));
+    return `<div class="goal-chip">${goalMark(goal)}<span class="g-label">${goalText(goal)}</span><b>${Math.min(goal.current, goal.target)}/${goal.target}</b><i class="bar" style="width:${pct * 100}%"></i></div>`;
   }).join("");
-  document.querySelector("#hud-stars").innerHTML = [0, 1, 2].map((index) => {
-    const on = score >= stars[index] ? " on" : "";
-    return `<span class="mini-star${on}">★</span>`;
-  }).join("");
+  const top = stars[2] || 1;
+  const fill = Math.max(0, Math.min(1, score / top));
+  document.querySelector("#score-fill").style.width = `${fill * 100}%`;
+  document.querySelectorAll(".star-mark").forEach((mark, index) => {
+    const threshold = stars[index] || 0;
+    mark.style.left = `${Math.max(8, Math.min(96, (threshold / top) * 100))}%`;
+    mark.classList.toggle("on", score >= threshold);
+  });
   paintBoosters();
 }
 
@@ -379,17 +395,17 @@ function showWin() {
   persist();
   const starHtml = [0, 1, 2].map((index) => `<span class="big-star${index < stars ? " on" : ""}">★</span>`).join("");
   const reward = rewards.length ? `<p class="reward">${t("reward")}: ${rewards.join(" · ")}</p>` : `<p class="reward muted">${t("noReward")}</p>`;
-  const next = game.level.id < LEVELS.length ? `<button type="button" class="primary" id="btn-next">${t("next")}</button>` : "";
+  const next = game.level.id < LEVELS.length ? juicyButton("btn-next", "primary", ICO.next, t("next")) : "";
   openModal("win", `
+    ${ribbon(t("win"))}
     <p class="kicker">${t("level")} ${game.level.id}</p>
-    <h2>${t("win")}</h2>
     <div class="star-row">${starHtml}</div>
     <p class="score-line">${t("score")}: <b>${game.state.score}</b></p>
     ${reward}
     <div class="row">
       ${next}
-      <button type="button" class="ghost" id="btn-retry">${t("retry")}</button>
-      <button type="button" class="ghost" id="btn-map">${t("map")}</button>
+      ${juicyButton("btn-retry", "ghost", ICO.retry, t("retry"))}
+      ${juicyButton("btn-map", "ghost", ICO.map, t("map"))}
     </div>
   `);
   document.querySelector("#btn-next")?.addEventListener("click", () => {
@@ -411,15 +427,15 @@ function showLose() {
   fx.replaceChildren();
   const extra = game.extraUsed
     ? ""
-    : `<button type="button" class="primary" id="btn-extra">${t("extra")}</button><p class="tip">${t("loseHint")}</p>`;
+    : `${juicyButton("btn-extra", "primary", ICO.plus, t("extra"))}<p class="tip">${t("loseHint")}</p>`;
   openModal("lose", `
+    ${ribbon(t("lose"))}
     <p class="kicker">${t("level")} ${game.level.id}</p>
-    <h2>${t("lose")}</h2>
     <p class="score-line">${t("score")}: <b>${game.state.score}</b></p>
     ${extra}
     <div class="row">
-      <button type="button" class="ghost" id="btn-retry">${t("retry")}</button>
-      <button type="button" class="ghost" id="btn-map">${t("map")}</button>
+      ${juicyButton("btn-retry", "ghost", ICO.retry, t("retry"))}
+      ${juicyButton("btn-map", "ghost", ICO.map, t("map"))}
     </div>
   `);
   document.querySelector("#btn-extra")?.addEventListener("click", async () => {
@@ -448,11 +464,17 @@ function goMap() {
   applyLanguage();
 }
 
+function confettiHtml() {
+  return `<div class="confetti" aria-hidden="true">${Array.from({ length: 18 }, (_, index) => `<i style="--d:${index}"></i>`).join("")}</div>`;
+}
+
 function openModal(kind, html) {
   const modal = document.querySelector("#modal");
   modal.hidden = false;
   modal.dataset.modal = kind;
   document.querySelector("#modal-card").innerHTML = html;
+  modal.querySelector(".confetti")?.remove();
+  if (kind === "win") modal.insertAdjacentHTML("beforeend", confettiHtml());
 }
 
 function closeModal() {
@@ -460,6 +482,7 @@ function closeModal() {
   modal.hidden = true;
   modal.dataset.modal = "";
   document.querySelector("#modal-card").innerHTML = "";
+  modal.querySelector(".confetti")?.remove();
 }
 
 function splash(text) {
@@ -483,10 +506,10 @@ function buzz(pattern) {
 function showHelp() {
   audio.button();
   openModal("help", `
-    <h2>${t("help")}</h2>
+    ${ribbon(t("help"))}
     <p class="tip">${t("helpBody")}</p>
     <button type="button" class="ghost danger" id="btn-reset">${t("reset")}</button>
-    <button type="button" class="primary" id="btn-close-help">${t("play")}</button>
+    ${juicyButton("btn-close-help", "primary", ICO.play, t("play"))}
   `);
   document.querySelector("#btn-close-help").addEventListener("click", () => {
     audio.button();
@@ -494,11 +517,11 @@ function showHelp() {
   });
   document.querySelector("#btn-reset").addEventListener("click", () => {
     openModal("reset", `
-      <h2>${t("reset")}</h2>
+      ${ribbon(t("reset"))}
       <p class="tip">${t("resetAsk")}</p>
       <div class="row">
-        <button type="button" class="primary" id="btn-reset-yes">${t("yes")}</button>
-        <button type="button" class="ghost" id="btn-reset-no">${t("no")}</button>
+        ${juicyButton("btn-reset-yes", "primary", ICO.retry, t("yes"))}
+        ${juicyButton("btn-reset-no", "ghost", ICO.map, t("no"))}
       </div>
     `);
     document.querySelector("#btn-reset-no").addEventListener("click", () => {
@@ -579,6 +602,13 @@ function boot() {
   canvas.addEventListener("pointercancel", onPointerUp);
   canvas.addEventListener("contextmenu", (event) => event.preventDefault());
   window.addEventListener("resize", () => view.resize());
+  document.querySelector("#map-scroll").addEventListener("scroll", () => {
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const layer = document.querySelector(".cloud-layer");
+    if (!layer) return;
+    const y = document.querySelector("#map-scroll").scrollTop;
+    layer.style.transform = `translate3d(0, ${y * 0.28}px, 0)`;
+  }, { passive: true });
   window.addEventListener("pointerdown", () => audio.unlock(), { once: true });
   if ("serviceWorker" in navigator && !location.search.includes("nosw=1")) {
     navigator.serviceWorker.register("./sw.js").catch(() => {});
@@ -589,6 +619,14 @@ function boot() {
     getHint: () => (game.state ? listValidMoves(game.state)[0] || null : null),
     cellCenter: (r, c) => view.cellToClient(r, c),
     setFast: (value) => view.setSpeed(value ? 16 : 1),
+    prepareLoss() {
+      const state = game.state;
+      if (!state || game.mode !== "play") return false;
+      state.moves = 1;
+      for (const goal of state.goals) goal.target = 1000000;
+      paintHud(state);
+      return true;
+    },
   };
 }
 
