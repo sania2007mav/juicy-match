@@ -358,128 +358,27 @@ button.juicy:active, .primary:active, .ghost:active, .icon-btn:active, .langs bu
 #screen-game[data-zone="island"] { background: linear-gradient(180deg, #7ec8ff, #b6f3d2 40%, #1aa0c8); }
 #screen-game[data-zone="festival"] { background: linear-gradient(180deg, #2a1b55, #ff7a8a 58%, #ffb703); }
 
-/* Quiet scenery in the gaps around the board. Painted with gradients only. */
-#board-wrap::before,
-#board-wrap::after {
-  content: "";
+#play-sky,
+#play-ground {
   position: absolute;
   left: 0;
   right: 0;
   pointer-events: none;
-  z-index: 0;
-  background-repeat: no-repeat;
 }
-#board-wrap::before {
-  top: 0;
-  height: 46%;
-  background:
-    radial-gradient(ellipse 78px 22px at 18% 22%, rgba(255,255,255,0.92), transparent 72%),
-    radial-gradient(ellipse 42px 14px at 30% 34%, rgba(255,255,255,0.72), transparent 72%),
-    radial-gradient(ellipse 86px 24px at 80% 14%, rgba(255,255,255,0.88), transparent 72%),
-    radial-gradient(ellipse 12px 18px at 14% 78%, #3eaf4e, transparent 70%),
-    radial-gradient(circle 6px at 22% 70%, #ff6b8a, transparent 72%),
-    radial-gradient(circle 5px at 36% 76%, #ffd15c, transparent 72%);
+#play-sky { top: 148px; height: 90px; z-index: 0; }
+#play-ground { bottom: 0; height: 176px; z-index: 1; }
+.hill { position: absolute; left: 0; bottom: 0; width: 100%; height: 118px; display: block; }
+.ground-prop {
+  position: absolute;
+  width: 68px;
+  height: 68px;
+  margin-left: -34px;
 }
-#board-wrap::after {
-  bottom: 0;
-  height: 42%;
-  background:
-    linear-gradient(#e7c99a, #e7c99a) 10% 36% / 6px 34px no-repeat,
-    linear-gradient(#fff6e4, #fff6e4) 28% 34% / 6px 38px no-repeat,
-    linear-gradient(#e7c99a, #e7c99a) 46% 32% / 6px 42px no-repeat,
-    linear-gradient(#d7a86a, #d7a86a) 64% 36% / 6px 34px no-repeat,
-    linear-gradient(#e7c99a, #e7c99a) 82% 34% / 6px 38px no-repeat,
-    linear-gradient(#d7a86a, #d7a86a) 8% 48% / 78% 5px no-repeat,
-    linear-gradient(#c4894a, #c4894a) 8% 62% / 78% 4px no-repeat,
-    radial-gradient(ellipse 16px 26px at 8% 86%, #2f9a40, transparent 70%),
-    radial-gradient(ellipse 14px 22px at 16% 92%, #67d35a, transparent 70%),
-    radial-gradient(ellipse 12px 20px at 38% 88%, #3eaf4e, transparent 70%),
-    radial-gradient(ellipse 16px 24px at 72% 84%, #2f9a40, transparent 70%),
-    radial-gradient(ellipse 14px 22px at 90% 90%, #67d35a, transparent 70%),
-    radial-gradient(circle 6px at 24% 74%, #ffd15c, transparent 72%),
-    radial-gradient(circle 6px at 52% 80%, #ff6b8a, transparent 72%),
-    radial-gradient(circle 5px at 84% 72%, #fff, transparent 72%);
-}
-#screen-game[data-zone="berry"] #board-wrap::before {
-  background:
-    radial-gradient(ellipse 78px 22px at 16% 20%, rgba(255,255,255,0.75), transparent 72%),
-    radial-gradient(ellipse 70px 20px at 76% 12%, rgba(243,214,255,0.8), transparent 72%),
-    radial-gradient(circle 8px at 20% 72%, #c45bff, transparent 72%),
-    radial-gradient(circle 5px at 20% 70%, #fff, transparent 70%),
-    radial-gradient(circle 7px at 70% 68%, #ff4f7a, transparent 72%),
-    radial-gradient(ellipse 18px 14px at 34% 78%, #2f9a46, transparent 72%);
-}
-#screen-game[data-zone="berry"] #board-wrap::after {
-  background:
-    radial-gradient(ellipse 22px 16px at 12% 70%, #c45bff, transparent 72%),
-    radial-gradient(ellipse 8px 16px at 12% 84%, #fff6ea, transparent 72%),
-    radial-gradient(ellipse 20px 14px at 30% 74%, #ff4f7a, transparent 72%),
-    radial-gradient(ellipse 8px 16px at 30% 88%, #fff6ea, transparent 72%),
-    radial-gradient(ellipse 22px 16px at 78% 68%, #7a4bff, transparent 72%),
-    radial-gradient(ellipse 8px 18px at 78% 84%, #fff6ea, transparent 72%),
-    radial-gradient(ellipse 26px 18px at 50% 88%, #218a3c, transparent 72%),
-    radial-gradient(ellipse 22px 16px at 88% 90%, #46c45a, transparent 72%),
-    radial-gradient(circle 5px at 48% 82%, #ffd15c, transparent 72%),
-    radial-gradient(circle 5px at 58% 90%, #ff6b8a, transparent 72%);
-}
-#screen-game[data-zone="citrus"] #board-wrap::before {
-  background:
-    radial-gradient(ellipse 80px 22px at 20% 24%, rgba(255,255,255,0.92), transparent 72%),
-    radial-gradient(ellipse 64px 18px at 74% 16%, rgba(255,255,255,0.8), transparent 72%),
-    radial-gradient(circle 7px at 16% 74%, #ffb703, transparent 72%),
-    radial-gradient(circle 6px at 28% 68%, #ff8a1f, transparent 72%),
-    radial-gradient(ellipse 16px 8px at 18% 80%, #3cba55, transparent 72%);
-}
-#screen-game[data-zone="citrus"] #board-wrap::after {
-  background:
-    linear-gradient(180deg, transparent 0 55%, rgba(77,182,232,0.55) 56% 78%, rgba(255,231,160,0.9) 79% 100%),
-    radial-gradient(ellipse 28px 10px at 22% 70%, rgba(255,255,255,0.55), transparent 72%),
-    radial-gradient(ellipse 36px 12px at 68% 74%, rgba(255,255,255,0.4), transparent 72%),
-    radial-gradient(circle 7px at 14% 48%, #ffb703, transparent 72%),
-    radial-gradient(circle 6px at 40% 42%, #ffe14a, transparent 72%),
-    radial-gradient(ellipse 14px 8px at 84% 50%, #3cba55, transparent 72%);
-}
-#screen-game[data-zone="island"] #board-wrap::before {
-  background:
-    radial-gradient(ellipse 84px 22px at 22% 20%, rgba(255,255,255,0.9), transparent 72%),
-    radial-gradient(ellipse 60px 18px at 78% 12%, rgba(255,255,255,0.75), transparent 72%),
-    radial-gradient(ellipse 26px 8px at 14% 62%, #1f9a4a, transparent 72%),
-    radial-gradient(ellipse 22px 7px at 18% 70%, #46c45a, transparent 72%),
-    radial-gradient(ellipse 4px 28px at 16% 78%, #c4894a, transparent 72%);
-}
-#screen-game[data-zone="island"] #board-wrap::after {
-  background:
-    linear-gradient(180deg, transparent 0 48%, rgba(26,160,200,0.45) 49% 100%),
-    radial-gradient(ellipse 30px 10px at 30% 62%, rgba(255,255,255,0.45), transparent 72%),
-    radial-gradient(ellipse 40px 12px at 72% 68%, rgba(255,255,255,0.35), transparent 72%),
-    radial-gradient(ellipse 24px 8px at 86% 46%, #1f9a4a, transparent 72%),
-    radial-gradient(ellipse 18px 6px at 90% 54%, #46c45a, transparent 72%),
-    radial-gradient(ellipse 4px 26px at 88% 62%, #c4894a, transparent 72%),
-    radial-gradient(circle 6px at 12% 78%, #ff6b8a, transparent 72%),
-    radial-gradient(circle 5px at 48% 84%, #ffd15c, transparent 72%);
-}
-#screen-game[data-zone="festival"] #board-wrap::before {
-  background:
-    radial-gradient(circle 5px at 12% 30%, #ffe56a, transparent 72%),
-    radial-gradient(circle 4px at 40% 18%, #fff, transparent 72%),
-    radial-gradient(circle 5px at 70% 26%, #ffb703, transparent 72%),
-    radial-gradient(circle 4px at 88% 14%, #ff8aa6, transparent 72%),
-    radial-gradient(ellipse 10px 16px at 22% 70%, #ffb703, transparent 70%),
-    radial-gradient(ellipse 8px 12px at 24% 62%, #fff4c2, transparent 72%);
-}
-#screen-game[data-zone="festival"] #board-wrap::after {
-  background:
-    linear-gradient(#ff4d6d, #ff4d6d) 14% 28% / 22px 12px no-repeat,
-    linear-gradient(#f4e2c4, #f4e2c4) 12% 28% / 3px 36px no-repeat,
-    linear-gradient(#ffe56a, #ffe56a) 78% 24% / 20px 12px no-repeat,
-    linear-gradient(#f4e2c4, #f4e2c4) 84% 24% / 3px 40px no-repeat,
-    radial-gradient(ellipse 14px 18px at 40% 78%, #ffb703, transparent 70%),
-    radial-gradient(ellipse 10px 12px at 42% 68%, #fff4c2, transparent 72%),
-    radial-gradient(ellipse 14px 18px at 60% 84%, #ff7a8a, transparent 70%),
-    radial-gradient(circle 5px at 28% 88%, #ffe56a, transparent 72%),
-    radial-gradient(circle 4px at 70% 90%, #fff, transparent 72%);
-}
-#board-wrap .tray { z-index: 1; }
+.ground-prop svg { width: 100%; height: 100%; display: block; }
+.sky-cloud { position: absolute; width: 112px; height: 46px; }
+.hud,
+#board-wrap { position: relative; z-index: 2; }
+#boosters { position: relative; z-index: 3; }
 
 .hud {
   display: block;

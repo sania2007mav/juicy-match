@@ -22,6 +22,10 @@ export function zoneOf(levelId) {
   return ZONES.find((zone) => levelId >= zone.from && levelId <= zone.to)?.id || "orchard";
 }
 
+export function propMarkup(kind) {
+  return MARKS[kind] || MARKS.flower;
+}
+
 function svgWrap(body) {
   return `<svg viewBox="0 0 64 64" aria-hidden="true">${body}</svg>`;
 }

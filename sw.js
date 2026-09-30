@@ -1,4 +1,4 @@
-const CACHE = "sochny-ryad-v5";
+const CACHE = "sochny-ryad-v6";
 const ASSETS = [
   "./",
   "./index.html",

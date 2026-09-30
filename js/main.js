@@ -12,7 +12,7 @@ import {
 import { goalText, getLang, levelName, setLang, t } from "./i18n.js";
 import { AudioBus } from "./audio.js";
 import { BoardView } from "./render.js";
-import { renderWorld, zoneOf } from "./mapscape.js";
+import { propMarkup, renderWorld, zoneOf } from "./mapscape.js";
 
 const SAVE_KEY = "sochny-ryad-v1";
 const BOOST_ORDER = ["hammer", "shuffle", "stripe"];
@@ -134,10 +134,58 @@ function focusCurrentLevel() {
   scroll.scrollTop = Math.max(0, Math.min(max, target));
 }
 
+const SCENERY = {
+  orchard: {
+    hill: ["#8ed85f", "#3eaf4e"],
+    props: [["bush", "7%", "58px"], ["fence", "30%", "104px"], ["flower", "48%", "112px"], ["flower", "66%", "104px"], ["bush", "93%", "58px"]],
+  },
+  berry: {
+    hill: ["#67c56e", "#2f8a48"],
+    props: [["bush", "6%", "58px"], ["mushroom", "28%", "108px"], ["flower", "50%", "112px"], ["flower", "68%", "104px"], ["bush", "94%", "58px"]],
+  },
+  citrus: {
+    hill: ["#ffe08a", "#f0c36a"],
+    props: [["umbrella", "8%", "62px"], ["flower", "32%", "108px"], ["flower", "52%", "112px"], ["tree", "90%", "64px"]],
+  },
+  island: {
+    hill: ["#5dce78", "#1497b8"],
+    props: [["palm", "6%", "64px"], ["flower", "34%", "108px"], ["bush", "58%", "100px"], ["palm", "92%", "64px"]],
+  },
+  festival: {
+    hill: ["#ffe08a", "#ffb703"],
+    props: [["lantern", "10%", "70px"], ["flag", "32%", "108px"], ["flower", "54%", "112px"], ["flag", "88%", "70px"]],
+  },
+};
+
+function hillMarkup(top, bottom) {
+  return `<svg class="hill" viewBox="0 0 400 120" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0 46 C80 16 150 64 220 38 C290 14 350 52 400 26 V120 H0 Z" fill="${top}"/>
+    <path d="M0 74 C100 54 190 90 280 66 C340 50 370 72 400 58 V120 H0 Z" fill="${bottom}"/>
+  </svg>`;
+}
+
+function cloudMarkup(left, top) {
+  return `<svg class="sky-cloud" style="left:${left};top:${top}" viewBox="0 0 120 48" aria-hidden="true">
+    <circle cx="30" cy="30" r="16" fill="#fff"/>
+    <circle cx="54" cy="20" r="18" fill="#fff"/>
+    <circle cx="80" cy="28" r="14" fill="#fff"/>
+    <rect x="24" y="28" width="68" height="14" rx="7" fill="#fff"/>
+  </svg>`;
+}
+
+function paintScenery(zone) {
+  const spec = SCENERY[zone] || SCENERY.orchard;
+  document.querySelector("#play-ground").innerHTML = hillMarkup(...spec.hill) + spec.props.map(([kind, left, bottom]) =>
+    `<span class="ground-prop" style="left:${left};bottom:${bottom}">${propMarkup(kind)}</span>`
+  ).join("");
+  document.querySelector("#play-sky").innerHTML = cloudMarkup("8%", "8px") + cloudMarkup("62%", "28px");
+}
+
 function applyZone(levelId) {
   const zone = zoneOf(levelId);
   document.querySelector("#screen-game").dataset.zone = zone;
   document.querySelector("#app").dataset.zone = zone;
+  paintScenery(zone);
 }
 
 function openLevel(id) {
