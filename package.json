@@ -1,0 +1,13 @@
+{
+  "name": "sochny-ryad",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/engine.test.js",
+    "test:e2e": "playwright test",
+    "start": "python3 -m http.server 4173"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.63.0"
+  }
+}

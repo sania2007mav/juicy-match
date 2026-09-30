@@ -1,0 +1,276 @@
+const STR = {
+  ru: {
+    title: "Сочный ряд",
+    tagline: "Фрукты, взрывы и ни одной рекламы",
+    mapNote: "42 уровня · прогресс сохраняется на устройстве",
+    "zone.orchard": "Яблоневый сад",
+    "zone.berry": "Ягодный лес",
+    "zone.citrus": "Цитрусовый берег",
+    "zone.island": "Тропический остров",
+    "zone.festival": "Сочный праздник",
+    play: "Играть",
+    start: "Начать",
+    back: "Назад",
+    next: "Дальше",
+    retry: "Ещё раз",
+    map: "К карте",
+    moves: "Ходы",
+    score: "Очки",
+    level: "Уровень",
+    stars: "Звёзды",
+    goal: "Цель",
+    win: "Уровень пройден!",
+    lose: "Ходы закончились",
+    loseHint: "Можно забрать 5 ходов бесплатно — один раз за попытку.",
+    extra: "+5 ходов бесплатно",
+    giveUp: "Сдаться",
+    reward: "Награда",
+    noReward: "Побей рекорд звёзд — получишь бустер",
+    hammer: "Давилка",
+    shuffle: "Перемешка",
+    stripe: "Полосатик",
+    hammerHelp: "Убрать фрукт",
+    shuffleHelp: "Перемешать",
+    stripeHelp: "Сделать полосатик",
+    pick: "Нажми на клетку",
+    cancel: "Отмена",
+    help: "Как играть",
+    sound: "Звук",
+    lang: "Язык",
+    reset: "Сбросить прогресс",
+    resetAsk: "Точно стереть звёзды, бустеры и открытые уровни?",
+    yes: "Да, сбросить",
+    no: "Нет",
+    locked: "Закрыто",
+    goalScore: "Набери {n} очков",
+    goalIce: "Растопи лёд: {n}",
+    goalCollect: "Собери {fruit}: {n}",
+    goalNectar: "Спусти нектар: {n}",
+    "fruit.apple": "яблоки",
+    "fruit.orange": "апельсины",
+    "fruit.lemon": "лимоны",
+    "fruit.pear": "груши",
+    "fruit.blueberry": "чернику",
+    "fruit.grape": "виноград",
+    "pop.juicy": "Сочно!",
+    "pop.tasty": "Вкусно!",
+    "pop.wow": "Невероятно!",
+    "pop.shuffle": "Перемешиваем!",
+    "tip.swap": "Проведи пальцем или нажми два соседних фрукта, чтобы поменять их местами.",
+    "tip.stripe": "Четыре в ряд — полосатик. Горизонтальный жест чистит ряд, вертикальный — столбик.",
+    "tip.wrap": "Угол или буква Т — сочный заряд. Он взрывается квадратом 3×3 дважды.",
+    "tip.color": "Пять в ряд — спектр. Обменяй его с фруктом, полосатиком или зарядом.",
+    "tip.ice": "Лёд под фруктом тает, когда фрукт исчезает. Собери весь лёд.",
+    "tip.ice2": "Двойной лёд нужно растопить два раза.",
+    "tip.collect": "Своди в ряд нужные фрукты — считаются и особые того же цвета.",
+    "tip.nectar": "Нектар не взрывается. Освободи клетку снизу, чтобы капля дошла до края.",
+    "tip.crate": "Ящик ломается от соседней комбинации или от взрыва.",
+    "tip.lock": "Лиана держит фрукт. Разбей её комбинацией рядом.",
+    "tip.shape": "Пустые места — это край доски. Фрукты пролетают сквозь дырки.",
+    "tip.finale": "Финал сада: лёд, нектар и сбор яблок. Бустеры тратятся из запаса, их не купить.",
+    helpBody:
+      "Меняй соседние фрукты свайпом или двумя нажатиями. Три в ряд исчезают, всё сыплется вниз. Четыре — полосатик, угол — заряд 3×3 дважды, пять — спектр. Особые можно менять между собой. Лёд тает под фруктом, ящик ломается рядом, лиана отпускает фрукт, нектар нужно довести вниз. Звёзды дают давилку, перемешку и полосатик. После поражения один раз можно взять 5 ходов.",
+    "boost.hammer": "Давилка",
+    "boost.shuffle": "Перемешка",
+    "boost.stripe": "Полосатик",
+  },
+  kk: {
+    title: "Шырынды қатар",
+    tagline: "Жеміс, жарылыс және ешбір жарнама",
+    mapNote: "42 деңгей · прогресс құрылғыда сақталады",
+    "zone.orchard": "Алма бағы",
+    "zone.berry": "Жидек орманы",
+    "zone.citrus": "Цитрус жағасы",
+    "zone.island": "Тропик арал",
+    "zone.festival": "Шырын мерекесі",
+    play: "Ойнау",
+    start: "Бастау",
+    back: "Артқа",
+    next: "Келесі",
+    retry: "Қайта",
+    map: "Картаға",
+    moves: "Жүріс",
+    score: "Ұпай",
+    level: "Деңгей",
+    stars: "Жұлдыз",
+    goal: "Мақсат",
+    win: "Деңгей өтті!",
+    lose: "Жүріс бітті",
+    loseHint: "Бір әрекетте бір рет 5 жүрісті тегін алуға болады.",
+    extra: "Тегін +5 жүріс",
+    giveUp: "Шығу",
+    reward: "Сыйлық",
+    noReward: "Жұлдыз рекордын жаңарт — бустер аласың",
+    hammer: "Басқыш",
+    shuffle: "Араластыру",
+    stripe: "Жолақша",
+    hammerHelp: "Жемісті алу",
+    shuffleHelp: "Араластыру",
+    stripeHelp: "Жолақша жасау",
+    pick: "Торды бас",
+    cancel: "Болдырмау",
+    help: "Қалай ойнау",
+    sound: "Дыбыс",
+    lang: "Тіл",
+    reset: "Прогресті өшіру",
+    resetAsk: "Жұлдыз, бустер және ашық деңгейлер өшсін бе?",
+    yes: "Иә, өшіру",
+    no: "Жоқ",
+    locked: "Жабық",
+    goalScore: "{n} ұпай жина",
+    goalIce: "Мұзды еріт: {n}",
+    goalCollect: "{fruit} жина: {n}",
+    goalNectar: "Нектарды түсір: {n}",
+    "fruit.apple": "алма",
+    "fruit.orange": "апельсин",
+    "fruit.lemon": "лимон",
+    "fruit.pear": "алмұрт",
+    "fruit.blueberry": "қаражидек",
+    "fruit.grape": "жүзім",
+    "pop.juicy": "Шырынды!",
+    "pop.tasty": "Дәмді!",
+    "pop.wow": "Керемет!",
+    "pop.shuffle": "Араластырылуда!",
+    "tip.swap": "Көрші жемістерді саусақпен сырғыт немесе екі рет басып ауыстыр.",
+    "tip.stripe": "Төрттік — жолақша. Көлденең сырғыту қатарды, тік сырғыту бағанды тазалайды.",
+    "tip.wrap": "Бұрыш немесе Т әрпі — шырынды заряд. Ол 3×3 шаршыны екі рет жарады.",
+    "tip.color": "Бестік — спектр. Оны жеміспен, жолақшамен немесе зарядпен ауыстыр.",
+    "tip.ice": "Жеміс жоғалғанда астындағы мұз ериді.",
+    "tip.ice2": "Қос мұзды екі рет еріту керек.",
+    "tip.collect": "Керек жемісті қатарға жина. Сол түсті ерекше жеміс те саналады.",
+    "tip.nectar": "Нектар жарылмайды. Төменгі тор босаса, тамшы шетке түседі.",
+    "tip.crate": "Жәшік көрші комбинациядан немесе жарылыстан сынады.",
+    "tip.lock": "Лиана жемісті ұстайды. Қасындағы комбинация оны босатады.",
+    "tip.shape": "Бос орын — тақтаның шеті. Жеміс тесіктен өтіп түседі.",
+    "tip.finale": "Бақтың финалы: мұз, нектар және алма. Бустерді сатып алмайсың — жұлдыздан жинайсың.",
+    helpBody:
+      "Көрші жемісті сырғытып немесе екі рет басып ауыстыр. Үштік жоғалады, қалғаны төмен түседі. Төрттік — жолақша, бұрыш — екі рет 3×3 заряд, бестік — спектр. Ерекшелерді бір-бірімен ауыстыруға болады. Мұз жемістің астында ериді, жәшік қасында сынады, лиана босайды, нектарды төмен түсіру керек. Жұлдыз басқыш, араластыру және жолақша береді. Жеңілгенде бір рет 5 жүріс алуға болады.",
+    "boost.hammer": "Басқыш",
+    "boost.shuffle": "Араластыру",
+    "boost.stripe": "Жолақша",
+  },
+  en: {
+    title: "Sochny Ryad",
+    tagline: "Fruit, blasts, and zero ads",
+    mapNote: "42 levels · progress stays on this device",
+    "zone.orchard": "Apple orchard",
+    "zone.berry": "Berry forest",
+    "zone.citrus": "Citrus beach",
+    "zone.island": "Tropical island",
+    "zone.festival": "Juice festival",
+    play: "Play",
+    start: "Start",
+    back: "Back",
+    next: "Next",
+    retry: "Retry",
+    map: "Map",
+    moves: "Moves",
+    score: "Score",
+    level: "Level",
+    stars: "Stars",
+    goal: "Goal",
+    win: "Level clear!",
+    lose: "Out of moves",
+    loseHint: "Take 5 free moves once per attempt. No timer, no fee.",
+    extra: "Free +5 moves",
+    giveUp: "Give up",
+    reward: "Reward",
+    noReward: "Beat your star record to earn a booster",
+    hammer: "Press",
+    shuffle: "Stir",
+    stripe: "Striper",
+    hammerHelp: "Remove a fruit",
+    shuffleHelp: "Stir the board",
+    stripeHelp: "Make a striper",
+    pick: "Tap a tile",
+    cancel: "Cancel",
+    help: "How to play",
+    sound: "Sound",
+    lang: "Language",
+    reset: "Reset progress",
+    resetAsk: "Erase stars, boosters, and unlocked levels?",
+    yes: "Yes, reset",
+    no: "No",
+    locked: "Locked",
+    goalScore: "Score {n} points",
+    goalIce: "Melt ice: {n}",
+    goalCollect: "Collect {fruit}: {n}",
+    goalNectar: "Drop nectar: {n}",
+    "fruit.apple": "apples",
+    "fruit.orange": "oranges",
+    "fruit.lemon": "lemons",
+    "fruit.pear": "pears",
+    "fruit.blueberry": "blueberries",
+    "fruit.grape": "grapes",
+    "pop.juicy": "Juicy!",
+    "pop.tasty": "Tasty!",
+    "pop.wow": "Unreal!",
+    "pop.shuffle": "Stirring!",
+    "tip.swap": "Swipe or tap two neighbors to swap them.",
+    "tip.stripe": "Four in a row makes a striper. A horizontal swipe clears a row, a vertical swipe clears a column.",
+    "tip.wrap": "An L or T makes a juicy charge. It blasts a 3×3 square twice.",
+    "tip.color": "Five in a row makes a spectrum. Swap it with a fruit, a striper, or a charge.",
+    "tip.ice": "Ice under a fruit melts when that fruit is cleared.",
+    "tip.ice2": "Double ice needs two clears.",
+    "tip.collect": "Match the fruits you need. Specials of that color count too.",
+    "tip.nectar": "Nectar never explodes. Clear below it so the drop reaches the bottom.",
+    "tip.crate": "A crate breaks from a neighboring match or a blast.",
+    "tip.lock": "A vine holds a fruit. Match beside it to snap the vine.",
+    "tip.shape": "Gaps are the edge of the board. Fruit falls through holes.",
+    "tip.finale": "The garden finale: ice, nectar, and apples. Boosters are earned from stars, never bought.",
+    helpBody:
+      "Swap neighbors by dragging or tapping twice. Three in a row vanish and the rest fall. Four makes a striper, an L or T makes a charge that blasts 3×3 twice, five makes a spectrum. Specials combine with each other. Ice melts under fruit, crates break from the side, vines release a fruit, nectar must reach the bottom. Stars earn a press, a stir, and a striper. After a loss you can take 5 moves once.",
+    "boost.hammer": "Press",
+    "boost.shuffle": "Stir",
+    "boost.stripe": "Striper",
+  },
+};
+
+const NAMES = {
+  ru: ["Яблочный старт","Солнечный ряд","Цитрусовый сад","Первая полоска","Сладкий взрыв","Ягодная поляна","Виноградный край","Сочный марафон","Большой сад","Девять на девять","Тонкий лёд","Холодный поднос","Двойная корочка","Ледяной узор","Оттепель","Морозный финал","Сбор яблок","Апельсиновый день","Лимонный дождь","Грушевый пикник","Корзина черники","Виноградная лоза","Первая капля","Три нектара","Дорога вниз","Нектар и лёд","Ящики на пути","Золотой поток","Деревянные ящики","Крепкая тара","Замки-лианы","Закрытый сад","Ящик и замок","Полоса препятствий","Срезанные углы","Плюс","Кольцо сада","Ромб","Чаша","Сердце сада","Большой микс","Сочный финал"],
+  kk: ["Алмалы бастау","Күн шуағы","Цитрус бағы","Алғашқы жолақ","Тәтті жарылыс","Жидек алаңы","Жүзім өлкесі","Шырынды марафон","Үлкен бақ","Тоғызға тоғыз","Жұқа мұз","Салқын табақ","Қос қабық","Мұзды өрнек","Еріген мұз","Аязды финал","Алма жинау","Апельсин күні","Лимон жаңбыры","Алмұрт пикник","Қаражидек себеті","Жүзім сабағы","Алғашқы тамшы","Үш нектар","Төменгі жол","Нектар мен мұз","Жолдағы жәшік","Алтын ағын","Ағаш жәшіктер","Берік жәшік","Лиана құлып","Жабық бақ","Жәшік пен құлып","Кедергілер","Кесілген бұрыш","Плюс","Бақ сақинасы","Ромб","Тостаған","Бақ жүрегі","Үлкен микс","Шырынды финал"],
+  en: ["Apple Start","Sunny Row","Citrus Garden","First Stripe","Sweet Burst","Berry Glade","Grape Country","Juicy Marathon","Big Garden","Nine by Nine","Thin Ice","Cold Tray","Double Crust","Ice Pattern","Thaw","Frosty Finale","Apple Picking","Orange Day","Lemon Rain","Pear Picnic","Blueberry Basket","Vine Harvest","First Drop","Three Nectars","Way Down","Nectar and Ice","Crates in the Way","Golden Stream","Wooden Crates","Sturdy Crates","Vine Locks","Locked Garden","Crate and Lock","Obstacle Run","Cut Corners","Plus Shape","Garden Ring","Diamond","The Bowl","Garden Heart","Grand Mix","Juicy Finale"],
+};
+
+let lang = "ru";
+
+export function getLang() {
+  return lang;
+}
+
+export function setLang(next) {
+  lang = STR[next] ? next : "ru";
+  return lang;
+}
+
+export function cycleLang() {
+  const order = ["ru", "kk", "en"];
+  lang = order[(order.indexOf(lang) + 1) % order.length];
+  return lang;
+}
+
+export function t(key, vars) {
+  const table = STR[lang] || STR.ru;
+  let text = table[key] ?? STR.ru[key] ?? key;
+  if (vars) {
+    for (const [name, value] of Object.entries(vars)) {
+      text = text.replaceAll(`{${name}}`, String(value));
+    }
+  }
+  return text;
+}
+
+export function levelName(id) {
+  return (NAMES[lang] || NAMES.ru)[id - 1] || `${t("level")} ${id}`;
+}
+
+export function goalText(goal) {
+  if (goal.type === "score") return t("goalScore", { n: goal.target });
+  if (goal.type === "ice") return t("goalIce", { n: goal.target });
+  if (goal.type === "collect") {
+    const ids = ["apple", "orange", "lemon", "pear", "blueberry", "grape"];
+    return t("goalCollect", { n: goal.target, fruit: t(`fruit.${ids[goal.color]}`) });
+  }
+  if (goal.type === "ingredient") return t("goalNectar", { n: goal.target });
+  return "";
+}
